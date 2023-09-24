@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 mkdir -p compiled images
 
@@ -41,7 +41,7 @@ echo "\n***********************************************************"
 echo "Testing 4 (the output is a transducer: fst and pdf)"
 echo "***********************************************************"
 for w in compiled/t-*.fst; do
-    fstcompose $w compiled/n2text.fst | fstshortestpath | fstproject --project_type=output |
+    fstcompose $w compiled/n2text.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $i ".fst")-out.fst
 done
 for i in compiled/t-*-out.fst; do
@@ -59,7 +59,7 @@ echo "\nTesting $trans"
 for w in "1" "2" "3" "4"; do
     echo "\t $w"
     python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
-                     fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
+                     fstcompose - compiled/$trans | fstshortestpath | fstproject --project_output=true |
                      fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=syms.txt
 done
 
@@ -74,7 +74,7 @@ echo "Testing 5 6 7 8  (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
 for w in 5 6 7 8; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
-                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
+                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_output=true |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
     echo "$w = $res"
 done
