@@ -17,7 +17,12 @@ done
 
 
 
+fstconcat "compiled/mmm2mm.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/mix2numerical.fst"
 
+
+fstinvert "compiled/pt_en.fst" > "compiled/en_pt.fst"
+fstconcat "compiled/pt_en.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/pt2en.fst"
+fstconcat "compiled/en_pt.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/en2pt.fst"
 
 
 
