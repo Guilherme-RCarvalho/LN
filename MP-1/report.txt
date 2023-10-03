@@ -1,0 +1,22 @@
+LN - 1st Mini-project
+Grupo 18 - 96868 Guilherme Carvalho - 50% || 96911 Simão Fonseca - 50% 
+	(O projeto foi feito em conjunto ao mesmo tempo lado a lado)
+Instituto superior Técnico
+
+c)
+	5.	Cria estados para os 9 primeiros algarismos, estados para o número 10-19 e aproveita
+		os estados iniciais com os algarismos 0-9 para os números 21-29 e 31.
+	6.	Ignorar o 0 quando recebe 2 algarismos e transição direta para texto.
+	7.	Transforma os 2 primeiros algarismos que são sempre iguais e usa um método similar
+		com o day.txt para os números 01-99.
+	8.	Junta(concatena) os transdutores previamente criados.
+
+d)
+	9.	Usa composição de transdutores para permitir alimentar os transdutores sucessivamente.
+		O objetivo da composição é receber o input em português ou inglês, passar para inglês,
+		usar o mix2numerical e por fim converter para texto usando o datenum2text.
+	10.	Une os transdutores mix2text e datenum2text, criando um transdutor que lê a data em
+		formato de texto ou de dígitos.
+
+Os ficheiros de teste são compostos por 2 testes para cada uma das máquinas a serem testadas na alínea e).
+As variações são as datas de cada um dos elementos do grupo.
