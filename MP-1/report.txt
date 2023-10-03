@@ -1,7 +1,7 @@
-LN - 1st Mini-project
+Instituto Superior Técnico - Língua Natural 2023/2024 - 1st Mini-project
 Grupo 18 - 96868 Guilherme Carvalho - 50% || 96911 Simão Fonseca - 50% 
-	(O projeto foi feito em conjunto ao mesmo tempo lado a lado)
-Instituto superior Técnico
+(O projeto foi feito em conjunto ao mesmo tempo lado a lado)
+
 
 c)
 	5.	Cria estados para os 9 primeiros algarismos, estados para o número 10-19 e aproveita
