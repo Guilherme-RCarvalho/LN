@@ -9,7 +9,8 @@ c)
 	6.	Ignorar o 0 quando recebe 2 algarismos e transição direta para texto.
 	7.	Transforma os 2 primeiros algarismos que são sempre iguais e usa um método similar
 		com o day.txt para os números 01-99.
-	8.	Junta(concatena) os transdutores previamente criados.
+	8.	Junta(concatena) os transdutores previamente criados e usa 2 transdutores adicionais 
+		que transformam o separador "/" entre mês, dia e ano em vazio e vírgula respetivamente.
 
 d)
 	9.	Usa composição de transdutores para permitir alimentar os transdutores sucessivamente.
