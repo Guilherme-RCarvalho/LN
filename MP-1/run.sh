@@ -47,28 +47,43 @@ done
 
 #Generate files
 echo "\n***********************************************************"
-echo "Testing a2 (the output is a transducer: fst and pdf)"
+echo "Testing a)2. (the output is a transducer: fst and pdf)"
 echo "***********************************************************"
 for w in compiled/t-a2*.fst; do
     fstcompose $w compiled/mix2numerical.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+echo "\n***********************************************************"
+echo "Testing b)4. (the output is a transducer: fst and pdf)"
+echo "***********************************************************"
 for w in compiled/t-b4*.fst; do
     fstcompose $w compiled/en2pt.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+echo "\n***********************************************************"
+echo "Testing c)8. (the output is a transducer: fst and pdf)"
+echo "***********************************************************"
 for w in compiled/t-c8*.fst; do
     fstcompose $w compiled/datenum2text.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+echo "\n***********************************************************"
+echo "Testing d)9. (the output is a transducer: fst and pdf)"
+echo "***********************************************************"
 for w in compiled/t-d9*.fst; do
     fstcompose $w compiled/mix2text.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+echo "\n***********************************************************"
+echo "Testing d)10. (the output is a transducer: fst and pdf)"
+echo "***********************************************************"
 for w in compiled/t-d10*.fst; do
     fstcompose $w compiled/date2text.fst | fstshortestpath | fstproject --project_output=true |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+echo "\n***********************************************************"
+echo "Generating output PDFs"
+echo "***********************************************************"
 for i in compiled/t-*-out.fst; do
 	echo "Creating image: images/$(basename $i '.fst').pdf"
    fstdraw --portrait --isymbols=syms.txt --osymbols=syms.txt $i | dot -Tpdf > images/$(basename $i '.fst').pdf
