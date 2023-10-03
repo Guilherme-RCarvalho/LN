@@ -11,23 +11,28 @@ for i in sources/*.txt tests/*.txt; do
 done
 
 # ############ CORE OF THE PROJECT  ############
-
-
-
-
-
-
+#Create mix2numerical
 fstconcat "compiled/mmm2mm.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/mix2numerical.fst"
 
-
+#Create pt2en/en2pt
 fstinvert "compiled/pt_en.fst" > "compiled/en_pt.fst"
 fstconcat "compiled/pt_en.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/pt2en.fst"
 fstconcat "compiled/en_pt.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon > "compiled/en2pt.fst"
 
+#Create datenum2text
+fstconcat "compiled/month.fst" "compiled/slash2empty.fst" | fstrmepsilon > "compiled/monthSpace.fst"
+fstconcat "compiled/monthspace.fst" "compiled/day.fst" | fstrmepsilon > "compiled/monthday.fst"
+fstconcat "compiled/monthday.fst" "compiled/slash2comma.fst" | fstrmepsilon > "compiled/monthdaycomma.fst"
+fstconcat "compiled/monthdaycomma.fst" "compiled/year.fst" | fstrmepsilon > "compiled/datenum2text.fst"
 
+#Create mix2text
+fstcompose "compiled/pt2en.fst" "compiled/mix2numerical.fst" | fstrmepsilon > "compiled/ptoren2numerical.fst"
+fstcompose "compiled/ptoren2numerical.fst" "compiled/datenum2text.fst" | fstrmepsilon > "compiled/mix2text_end.fst"
+fstcompose "compiled/mix2numerical.fst" "compiled/datenum2text.fst" | fstrmepsilon > "compiled/mix2text_init.fst"
+fstunion "compiled/mix2text_init.fst" "compiled/mix2text_end.fst" | fstrmepsilon > "compiled/mix2text.fst"
 
-
-
+#Create date2text
+fstunion "compiled/mix2text.fst" "compiled/datenum2text.fst" | fstrmepsilon > "compiled/date2text.fst"
 
 # ############ generate PDFs  ############
 echo "Starting to generate PDFs"
@@ -38,50 +43,35 @@ done
 
 
 
-# ############      3 different ways of testing     ############
-# ############ (you can use the one(s) you prefer)  ############
+# ############      Testing     ############
 
-#1 - generates files
+#Generate files
 echo "\n***********************************************************"
-echo "Testing 4 (the output is a transducer: fst and pdf)"
+echo "Testing a2 (the output is a transducer: fst and pdf)"
 echo "***********************************************************"
-for w in compiled/t-*.fst; do
-    fstcompose $w compiled/n2text.fst | fstshortestpath | fstproject --project_output=true |
-                  fstrmepsilon | fsttopsort > compiled/$(basename $i ".fst")-out.fst
+for w in compiled/t-a2*.fst; do
+    fstcompose $w compiled/mix2numerical.fst | fstshortestpath | fstproject --project_output=true |
+                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
+for w in compiled/t-b4*.fst; do
+    fstcompose $w compiled/en2pt.fst | fstshortestpath | fstproject --project_output=true |
+                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
+done
+for w in compiled/t-c8*.fst; do
+    fstcompose $w compiled/datenum2text.fst | fstshortestpath | fstproject --project_output=true |
+                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
+done
+for w in compiled/t-d9*.fst; do
+    fstcompose $w compiled/mix2text.fst | fstshortestpath | fstproject --project_output=true |
+                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
+done
+#for w in compiled/t-d10*.fst; do
+#    fstcompose $w compiled/date2text.fst | fstshortestpath | fstproject --project_output=true |
+#                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
+#done
 for i in compiled/t-*-out.fst; do
 	echo "Creating image: images/$(basename $i '.fst').pdf"
    fstdraw --portrait --isymbols=syms.txt --osymbols=syms.txt $i | dot -Tpdf > images/$(basename $i '.fst').pdf
-done
-
-
-#2 - present the output as an acceptor
-echo "\n***********************************************************"
-echo "Testing 1 2 3 4 (output is a acceptor)"
-echo "***********************************************************"
-trans=n2text.fst
-echo "\nTesting $trans"
-for w in "1" "2" "3" "4"; do
-    echo "\t $w"
-    python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
-                     fstcompose - compiled/$trans | fstshortestpath | fstproject --project_output=true |
-                     fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=syms.txt
-done
-
-#3 - presents the output with the tokens concatenated (uses a different syms on the output)
-fst2word() {
-	awk '{if(NF>=3){printf("%s",$3)}}END{printf("\n")}'
-}
-
-trans=n2text.fst
-echo "\n***********************************************************"
-echo "Testing 5 6 7 8  (output is a string  using 'syms-out.txt')"
-echo "***********************************************************"
-for w in 5 6 7 8; do
-    res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
-                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_output=true |
-                       fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
-    echo "$w = $res"
 done
 
 echo "\nThe end"
