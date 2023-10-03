@@ -20,7 +20,7 @@ fstconcat "compiled/pt_en.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon
 fstconcat "compiled/en_pt.fst" "compiled/quasi_mix2numerical.fst" | fstrmepsilon | fstarcsort > "compiled/en2pt.fst"
 
 #Create datenum2text
-fstconcat "compiled/month.fst" "compiled/slash2empty.fst" | fstrmepsilon > "compiled/monthSpace.fst"
+fstconcat "compiled/month.fst" "compiled/slash2empty.fst" | fstrmepsilon > "compiled/monthspace.fst"
 fstconcat "compiled/monthspace.fst" "compiled/day.fst" | fstrmepsilon > "compiled/monthday.fst"
 fstconcat "compiled/monthday.fst" "compiled/slash2comma.fst" | fstrmepsilon > "compiled/monthdaycomma.fst"
 fstconcat "compiled/monthdaycomma.fst" "compiled/year.fst" | fstrmepsilon | fstarcsort > "compiled/datenum2text.fst"
