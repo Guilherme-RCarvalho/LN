@@ -3,6 +3,15 @@ Grupo 18 - 96868 Guilherme Carvalho - 50% || 96911 Simão Fonseca - 50%
 (O projeto foi feito em conjunto ao mesmo tempo lado a lado)
 
 
+
+a)
+	1. Transdutor simples que faz o pretendido  tendo em conta apenas os meses em inglês
+	2. Transdutor formado pela concatenação do transdutor 1. ("mmm2mm.fst") com um transdutor adicional ("quasi_mix2numerical.fst") que faz a aceitação do resto da data (isto é a data partindo da primeira "/" inclusive)
+
+b)
+	3. Criado pela concatenação dos transdutores auxiliares "pt_en.fst" (que faz a conversão da versao condensada do mês em português para a inglesa) e "quasi_mix2numerical.fst" (que faz o referido em 2. e é aqui reaproveitado) 
+	4. Obtido através de processo similar ao feito em 3., com a alteração de que usamos um transdutor "en_pt.fst" (que é obtido através da inversão do transdutor "pt_en.fst" usado em 3. fazendo assim a conversão da versão condensada do mês em inglês para português) que é depois concatenado ao transdutor "quasi_mix2numerical.fst"
+
 c)
 	5.	Cria estados para os 9 primeiros algarismos, estados para o número 10-19 e aproveita
 		os estados iniciais com os algarismos 0-9 para os números 21-29 e 31.
